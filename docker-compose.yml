@@ -1,0 +1,34 @@
+version: '3.3'
+
+services:
+  db:
+    image: mysql:5.7
+    volumes:
+      - db_data:/var/lib/mysql
+    restart: unless-stopped
+    env_file:
+      - ./environment/production.env
+
+  wordpress:
+    depends_on:
+      - db
+    image: wordpress:latest
+    volumes:
+      - wordpress_data:/var/www/html
+    ports:
+      - "80:80"
+    restart: unless-stopped
+    env_file:
+      - ./environment/production.env
+
+volumes:
+  db_data:
+    driver_opts:
+      type: none 
+      device: /srv/docker/wordpress/db
+      o: bind
+  wordpress_data:
+    driver_opts:
+      type: none
+      device: /srv/docker/wordpress
+      o: bind
