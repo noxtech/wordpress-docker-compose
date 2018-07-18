@@ -15,6 +15,7 @@ services:
     image: wordpress:latest
     volumes:
       - wordpress_data:/var/www/html
+      - /etc/letsencrypt/archive/noxlan.co.uk:/var/www/noxlan.co.uk:ro
     ports:
       - "192.168.1.100:80:80"
     restart: unless-stopped
@@ -25,10 +26,10 @@ volumes:
   db_data:
     driver_opts:
       type: none 
-      device: /srv/docker/wordpress/db
+      device: /srv/quickload/docker-volumes/wordpress/db
       o: bind
   wordpress_data:
     driver_opts:
       type: none
-      device: /srv/docker/wordpress
+      device: /srv/quickload/docker-volumes/wordpress/html
       o: bind
