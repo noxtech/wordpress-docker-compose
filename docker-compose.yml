@@ -1,10 +1,10 @@
-version: '3.3'
+version: '2'
 
 services:
   db:
     image: mysql:5.7
     volumes:
-      - db_data:/var/lib/mysql
+      - /srv/quickload/docker-volumes/wordpress/db:/var/lib/mysql
     restart: unless-stopped
     env_file:
       - ./environment/production.env
@@ -14,22 +14,10 @@ services:
       - db
     image: wordpress:latest
     volumes:
-      - wordpress_data:/var/www/html
+      - /srv/quickload/docker-volumes/wordpress/html:/var/www/html
       - /etc/letsencrypt/archive/noxlan.co.uk:/var/www/noxlan.co.uk:ro
     ports:
       - "192.168.1.100:80:80"
     restart: unless-stopped
     env_file:
       - ./environment/production.env
-
-volumes:
-  db_data:
-    driver_opts:
-      type: none 
-      device: /srv/quickload/docker-volumes/wordpress/db
-      o: bind
-  wordpress_data:
-    driver_opts:
-      type: none
-      device: /srv/quickload/docker-volumes/wordpress/html
-      o: bind
